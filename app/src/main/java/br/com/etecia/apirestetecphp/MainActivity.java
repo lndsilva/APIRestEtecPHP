@@ -4,7 +4,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.button.MaterialButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,12 +30,12 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btnCarregarLista;
+    private MaterialButton btnCarregarLista;
     private RecyclerView recyclerViewProdutos;
     private ProdutoAdapter produtoAdapter;
     private List<Produto> listaProdutos;
 
-    // 🔴 Altere para o IP da sua máquina ou domínio do seu servidor onde está a API PHP
+    // Altere para o IP da sua máquina ou domínio do seu servidor onde está a API PHP
     // Nota: Se estiver testando no emulador oficial do Android Studio, o localhost do seu PC é o IP 10.0.2.2
     private static final String URL_API_LISTA = "http://10.0.2";
     private static final String URL_API_IMAGEM_BASE = "http://10.0.2";
@@ -38,6 +44,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        EdgeToEdge.enable(this);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         // Inicializa os componentes do Layout XML
         btnCarregarLista = findViewById(R.id.btnCarregarLista);

@@ -6,10 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_margin="10dp"
     android:padding="16dp">
 
     <!-- Botão responsável por disparar a requisição Volley à API PHP -->
-    <Button
+    <com.google.android.material.button.MaterialButton
+        app:cornerRadius="5dp"
         android:id="@+id/btnCarregarLista"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

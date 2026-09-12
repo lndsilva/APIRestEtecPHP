@@ -37,8 +37,8 @@ public class ProdutoAdapter extends RecyclerView.Adapter<ProdutoAdapter.ProdutoV
         // ITERAÇÃO COM A API: O Glide chama a URL da API PHP que cospe o BLOB binário
         Glide.with(holder.itemView.getContext())
                 .load(produto.getUrlImagem())
-                .placeholder(android.R.drawable.ic_menu_gallery) // Imagem enquanto carrega
-                .error(android.R.drawable.ic_delete)           // Imagem se der erro (ex: sem foto)
+                .placeholder(android.R.drawable.ic_menu_gallery)
+                .error(android.R.drawable.ic_delete)
                 .into(holder.imgProduto);
     }
 
