@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private ProdutoAdapter produtoAdapter;
     private List<Produto> listaProdutos;
 
+    // CORREÇÃO: URLs completas apontando para a sua pasta do XAMPP via IP do emulador
     private static final String URL_API_LISTA = "http://10.0.2";
     private static final String URL_API_IMAGEM_BASE = "http://10.0.2";
 
