@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private List<Produto> listaProdutos;
 
     // CORREÇÃO: URLs completas apontando para a sua pasta do XAMPP via IP do emulador
-    private static final String URL_API_LISTA = "http://10.0.2";
-    private static final String URL_API_IMAGEM_BASE = "http://10.0.2";
+    private static final String URL_API_LISTA = "http://10.67.96.90/api-php-volley/listar_produtos.php";
+    private static final String URL_API_IMAGEM_BASE = "http://10.67.96.90/api-php-volley/ver_imagem.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
