@@ -35,8 +35,6 @@ public class MainActivity extends AppCompatActivity {
     private ProdutoAdapter produtoAdapter;
     private List<Produto> listaProdutos;
 
-    // Altere para o IP da sua máquina ou domínio do seu servidor onde está a API PHP
-    // Nota: Se estiver testando no emulador oficial do Android Studio, o localhost do seu PC é o IP 10.0.2.2
     private static final String URL_API_LISTA = "http://10.0.2";
     private static final String URL_API_IMAGEM_BASE = "http://10.0.2";
 
@@ -77,52 +75,46 @@ public class MainActivity extends AppCompatActivity {
         RequestQueue fila = Volley.newRequestQueue(this);
 
         // Cria a requisição GET esperando um Array JSON como resposta
-        JsonArrayRequest requisicaoArray = new JsonArrayRequest(
-                Request.Method.GET,
-                URL_API_LISTA,
-                null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray resposta) {
-                        try {
-                            // Limpa os registros anteriores para evitar itens duplicados na tela
-                            listaProdutos.clear();
+        JsonArrayRequest requisicaoArray = new JsonArrayRequest(Request.Method.GET, URL_API_LISTA, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray resposta) {
+                try {
+                    // Limpa os registros anteriores para evitar itens duplicados na tela
+                    listaProdutos.clear();
 
-                            // Percorre todos os objetos JSON retornados pela API PHP
-                            for (int i = 0; i < resposta.length(); i++) {
-                                JSONObject objetoJson = resposta.getJSONObject(i);
+                    // Percorre todos os objetos JSON retornados pela API PHP
+                    for (int i = 0; i < resposta.length(); i++) {
+                        JSONObject objetoJson = resposta.getJSONObject(i);
 
-                                // Captura os dados textuais enviados pelo PHP (ID e Nome)
-                                int id = objetoJson.getInt("id");
-                                String nome = objetoJson.getString("nome");
-                                double preco = 0.0; // Defina um valor ou capture se existir no banco
+                        // Captura os dados textuais enviados pelo PHP (ID e Nome)
+                        int id = objetoJson.getInt("id");
+                        String nome = objetoJson.getString("nome");
+                        double preco = 0.0; // Defina um valor ou capture se existir no banco
 
-                                // MONTAGEM DINÂMICA DA URL: Interagindo com o script php que expõe o BLOB
-                                String urlImagemCompleta = URL_API_IMAGEM_BASE + id;
+                        // MONTAGEM DINÂMICA DA URL: Interagindo com o script php que expõe o BLOB
+                        String urlImagemCompleta = URL_API_IMAGEM_BASE + id;
 
-                                // Instancia a classe de modelo e adiciona na lista do RecyclerView
-                                Produto produto = new Produto(id, nome, preco, urlImagemCompleta);
-                                listaProdutos.add(produto);
-                            }
-
-                            // Notifica o Adapter que a lista mudou para atualizar a interface gráfica
-                            produtoAdapter.notifyDataSetChanged();
-                            Toast.makeText(MainActivity.this, "Dados e imagens carregados!", Toast.LENGTH_SHORT).show();
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText(MainActivity.this, "Erro ao interpretar JSON", Toast.LENGTH_SHORT).show();
-                        }
+                        // Instancia a classe de modelo e adiciona na lista do RecyclerView
+                        Produto produto = new Produto(id, nome, preco, urlImagemCompleta);
+                        listaProdutos.add(produto);
                     }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError erro) {
-                        // Trata erros de conexão de rede ou URL inválida
-                        Toast.makeText(MainActivity.this, "Erro de rede: " + erro.getMessage(), Toast.LENGTH_LONG).show();
-                    }
+
+                    // Notifica o Adapter que a lista mudou para atualizar a interface gráfica
+                    produtoAdapter.notifyDataSetChanged();
+                    Toast.makeText(MainActivity.this, "Dados e imagens carregados!", Toast.LENGTH_SHORT).show();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(MainActivity.this, "Erro ao interpretar JSON", Toast.LENGTH_SHORT).show();
                 }
-        );
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError erro) {
+                // Trata erros de conexão de rede ou URL inválida
+                Toast.makeText(MainActivity.this, "Erro de rede: " + erro.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
 
         // Adiciona a requisição na fila do Volley para execução imediata
         fila.add(requisicaoArray);
